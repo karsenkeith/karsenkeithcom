@@ -603,6 +603,18 @@ footer {
     margin-bottom: 1.5rem;
 }
 
+.article-content a {
+    color: #667eea;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.article-content a:hover {
+    border-bottom-color: #667eea;
+    opacity: 0.8;
+}
+
 .article-content ul,
 .article-content ol {
     margin-left: 2rem;

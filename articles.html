@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles - Karsen Keith</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="container">
+                <h1 class="logo">Karsen Keith</h1>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="articles.html" class="active">Articles</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="articles-section">
+            <div class="container">
+                <h2>Academic Articles</h2>
+                
+                <div class="search-filter-section">
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="Search articles by title, content, or tags...">
+                        <button id="search-btn" class="btn btn-primary">Search</button>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h4>Filter by Tag:</h4>
+                        <div id="tag-filter" class="tag-filter">
+                            <!-- Tags will be loaded here by JavaScript -->
+                        </div>
+                        <button id="clear-filter" class="btn btn-secondary">Clear Filters</button>
+                    </div>
+                </div>
+
+                <div id="articles-container" class="articles-list">
+                    <!-- Articles will be loaded here by JavaScript -->
+                </div>
+
+                <div id="no-results" class="no-results" style="display: none;">
+                    <p>No articles found matching your search criteria.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Karsen Keith. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

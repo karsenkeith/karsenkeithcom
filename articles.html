@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Articles - Karsen Keith</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -31,13 +34,29 @@
                         <button id="search-btn" class="btn btn-primary">Search</button>
                     </div>
                     
-                    <div class="filter-section">
-                        <h4>Filter by Tag:</h4>
-                        <div id="tag-filter" class="tag-filter">
-                            <!-- Tags will be loaded here by JavaScript -->
+                    <button class="show-more-btn" id="show-more-btn" onclick="toggleSearchFilter()">
+                        More Filters
+                    </button>
+                    
+                    <div class="search-filter-content" id="search-filter-content">
+                        <div class="filter-section">
+                            <h4>Filter by Tag:</h4>
+                            <div id="tag-filter" class="tag-filter">
+                                <!-- Tags will be loaded here by JavaScript -->
+                            </div>
+                            <button id="clear-filter" class="btn btn-secondary">Clear Filters</button>
                         </div>
-                        <button id="clear-filter" class="btn btn-secondary">Clear Filters</button>
                     </div>
+                </div>
+
+                <div class="sort-section-outer">
+                    <label for="sort-select">Sort by:</label>
+                    <select id="sort-select" class="sort-select">
+                        <option value="date-desc">Date (Newest First)</option>
+                        <option value="date-asc">Date (Oldest First)</option>
+                        <option value="title-asc">Title (A-Z)</option>
+                        <option value="title-desc">Title (Z-A)</option>
+                    </select>
                 </div>
 
                 <div id="articles-container" class="articles-list">
@@ -57,6 +76,7 @@
         </div>
     </footer>
 
+    <script src="articles-data.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

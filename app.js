@@ -1,83 +1,7 @@
-// Sample articles data structure
-// In a real application, this would come from a database or API
-const articles = [
-    {
-        id: 1,
-        title: "The Historical Context of the Exodus",
-        date: "2026-01-15",
-        excerpt: "An exploration of the archaeological and historical evidence surrounding the Exodus narrative.",
-        content: "The Exodus narrative represents one of the most significant events in biblical history. This article examines the archaeological evidence, historical context, and scholarly debates surrounding the dating and historicity of the Exodus. We'll explore Egyptian records, archaeological findings, and comparative ancient Near Eastern texts to better understand this pivotal event.",
-        tags: ["Old Testament", "History", "Archaeology", "Exodus"],
-        featured: true
-    },
-    {
-        id: 2,
-        title: "Understanding Greek Verb Tenses in the New Testament",
-        date: "2026-01-10",
-        excerpt: "A comprehensive guide to Greek verb tenses and their theological implications.",
-        content: "The Greek language of the New Testament contains nuanced verb tenses that often carry significant theological meaning. This article explores the aorist, present, perfect, and other tenses, demonstrating how understanding these grammatical features can enhance our interpretation of Scripture. We'll examine specific examples from the Gospels and Pauline epistles.",
-        tags: ["New Testament", "Greek", "Language", "Exegesis"],
-        featured: true
-    },
-    {
-        id: 3,
-        title: "Covenant Theology in the Old Testament",
-        date: "2026-01-05",
-        excerpt: "An analysis of the major covenants throughout the Hebrew Bible.",
-        content: "The concept of covenant is central to understanding Old Testament theology. This article examines the Abrahamic, Mosaic, Davidic, and New Covenants, exploring their structure, conditions, and theological significance. We'll consider how these covenants relate to one another and their fulfillment in the biblical narrative.",
-        tags: ["Old Testament", "Theology", "Covenant", "Biblical Theology"],
-        featured: true
-    },
-    {
-        id: 4,
-        title: "The Pauline Concept of Justification",
-        date: "2025-12-20",
-        excerpt: "Examining Paul's teaching on justification by faith in Romans and Galatians.",
-        content: "Justification by faith is a cornerstone of Pauline theology. This article provides an in-depth analysis of Paul's teaching in Romans and Galatians, examining the Greek terminology, theological framework, and implications for Christian doctrine. We'll also consider the historical debates and various interpretative approaches.",
-        tags: ["New Testament", "Paul", "Theology", "Soteriology"],
-        featured: false
-    },
-    {
-        id: 5,
-        title: "Messianic Prophecies in Isaiah",
-        date: "2025-12-15",
-        excerpt: "A study of the messianic passages in the book of Isaiah.",
-        content: "The book of Isaiah contains numerous passages traditionally interpreted as messianic prophecies. This article examines key texts such as Isaiah 7:14, 9:6-7, 53, and others, considering both their original historical context and their New Testament interpretation. We'll explore the criteria for identifying messianic prophecy and the hermeneutical principles involved.",
-        tags: ["Old Testament", "Prophecy", "Messiah", "Isaiah"],
-        featured: false
-    },
-    {
-        id: 6,
-        title: "The Documentary Hypothesis: An Overview",
-        date: "2025-12-01",
-        excerpt: "Understanding source criticism and the composition of the Pentateuch.",
-        content: "The Documentary Hypothesis proposes that the Pentateuch was composed from multiple source documents. This article provides an overview of the theory, examining the proposed sources (J, E, D, P), the evidence cited in its support, and critical responses. We'll consider both traditional and modern approaches to Pentateuchal composition.",
-        tags: ["Old Testament", "Critical Studies", "Pentateuch", "Scholarship"],
-        featured: false
-    },
-    {
-        id: 7,
-        title: "Jesus' Parables: Literary and Theological Analysis",
-        date: "2025-11-25",
-        excerpt: "Examining the literary structure and theological message of Jesus' parables.",
-        content: "The parables of Jesus are masterful teaching tools that convey profound spiritual truths. This article analyzes the literary features of parables, including their structure, metaphorical language, and rhetorical purpose. We'll examine several key parables and explore various interpretive methods.",
-        tags: ["New Testament", "Gospels", "Jesus", "Parables"],
-        featured: false
-    },
-    {
-        id: 8,
-        title: "The Temple in Ancient Israel",
-        date: "2025-11-20",
-        excerpt: "Archaeological and biblical perspectives on Solomon's Temple and the Second Temple.",
-        content: "The Temple in Jerusalem served as the central place of worship in ancient Israel. This article examines the biblical descriptions, archaeological evidence, and historical records related to Solomon's Temple and the Second Temple. We'll explore the Temple's architecture, rituals, and theological significance.",
-        tags: ["Old Testament", "History", "Archaeology", "Temple", "Worship"],
-        featured: false
-    }
-];
-
 // State management
 let filteredArticles = [...articles];
 let activeFilters = new Set();
+let currentSortOrder = 'date-desc'; // Default sort order
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
@@ -109,12 +33,13 @@ function loadFeaturedArticles() {
     
     container.innerHTML = featuredArticles.map(article => `
         <div class="article-card">
-            <h4>${article.title}</h4>
+            <h4><a href="articles/${article.filename}">${article.title}</a></h4>
             <div class="date">${formatDate(article.date)}</div>
-            <div class="excerpt">${article.excerpt}</div>
+            <div class="excerpt">${article.summary}</div>
             <div class="tags">
                 ${article.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
             </div>
+            <a href="articles/${article.filename}" class="btn btn-primary" style="margin-top: 1rem;">Read More</a>
         </div>
     `).join('');
 }
@@ -184,19 +109,31 @@ function loadArticles() {
     container.style.display = 'flex';
     noResults.style.display = 'none';
     
-    // Sort articles by date (newest first)
-    const sortedArticles = [...filteredArticles].sort((a, b) => 
-        new Date(b.date) - new Date(a.date)
-    );
+    // Sort articles based on current sort order
+    const sortedArticles = [...filteredArticles].sort((a, b) => {
+        switch (currentSortOrder) {
+            case 'date-desc':
+                return new Date(b.date) - new Date(a.date);
+            case 'date-asc':
+                return new Date(a.date) - new Date(b.date);
+            case 'title-asc':
+                return a.title.localeCompare(b.title);
+            case 'title-desc':
+                return b.title.localeCompare(a.title);
+            default:
+                return new Date(b.date) - new Date(a.date);
+        }
+    });
     
     container.innerHTML = sortedArticles.map(article => `
         <div class="article-item">
-            <h3>${article.title}</h3>
+            <h3><a href="articles/${article.filename}">${article.title}</a></h3>
             <div class="date">${formatDate(article.date)}</div>
-            <div class="content">${article.content}</div>
+            <div class="summary">${article.summary}</div>
             <div class="tags">
                 ${article.tags.map(tag => `<span class="tag" onclick="toggleTagFilter('${tag}')">${tag}</span>`).join('')}
             </div>
+            <a href="articles/${article.filename}" class="btn btn-primary" style="margin-top: 1rem;">Read Full Article</a>
         </div>
     `).join('');
 }
@@ -206,6 +143,7 @@ function setupSearchAndFilter() {
     const searchInput = document.getElementById('search-input');
     const searchBtn = document.getElementById('search-btn');
     const clearBtn = document.getElementById('clear-filter');
+    const sortSelect = document.getElementById('sort-select');
     
     if (searchBtn) {
         searchBtn.addEventListener('click', performSearch);
@@ -221,6 +159,13 @@ function setupSearchAndFilter() {
     
     if (clearBtn) {
         clearBtn.addEventListener('click', clearFilters);
+    }
+    
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function(e) {
+            currentSortOrder = e.target.value;
+            loadArticles();
+        });
     }
 }
 
@@ -242,11 +187,10 @@ function performSearch() {
             // Check search query
             if (query !== '') {
                 const titleMatch = article.title.toLowerCase().includes(query);
-                const contentMatch = article.content.toLowerCase().includes(query);
-                const excerptMatch = article.excerpt.toLowerCase().includes(query);
+                const summaryMatch = article.summary.toLowerCase().includes(query);
                 const tagMatch = article.tags.some(tag => tag.toLowerCase().includes(query));
                 
-                return titleMatch || contentMatch || excerptMatch || tagMatch;
+                return titleMatch || summaryMatch || tagMatch;
             }
             
             return true;
@@ -289,4 +233,18 @@ function clearFilters() {
 function formatDate(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
+}
+
+// Toggle search filter section
+function toggleSearchFilter() {
+    const content = document.getElementById('search-filter-content');
+    const btn = document.getElementById('show-more-btn');
+    
+    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+        content.style.maxHeight = '0px';
+        btn.textContent = 'More Filters';
+    } else {
+        content.style.maxHeight = content.scrollHeight + 'px';
+        btn.textContent = 'Less Filters';
+    }
 }

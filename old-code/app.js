@@ -1,10 +1,18 @@
 // State management
-let filteredArticles = [...articles];
+const allArticles = (() => {
+    if (Array.isArray(window.articles)) return window.articles;
+    if (typeof articles !== 'undefined' && Array.isArray(articles)) return articles;
+    return [];
+})();
+let filteredArticles = [...allArticles];
 let activeFilters = new Set();
 let currentSortOrder = 'date-desc'; // Default sort order
 
 // Initialize the page
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    await loadHtmlIncludes();
+    setActiveNavLink();
+
     const currentPage = getCurrentPage();
     
     if (currentPage === 'index') {
@@ -29,7 +37,7 @@ function loadFeaturedArticles() {
     const container = document.getElementById('featured-articles');
     if (!container) return;
     
-    const featuredArticles = articles.filter(article => article.featured);
+    const featuredArticles = allArticles.filter(article => article.featured);
     
     container.innerHTML = featuredArticles.map(article => `
         <div class="article-card">
@@ -50,7 +58,7 @@ function loadPopularTags() {
     if (!container) return;
     
     const tagCounts = {};
-    articles.forEach(article => {
+    allArticles.forEach(article => {
         article.tags.forEach(tag => {
             tagCounts[tag] = (tagCounts[tag] || 0) + 1;
         });
@@ -76,7 +84,7 @@ function loadAllTags() {
     if (!container) return;
     
     const allTags = new Set();
-    articles.forEach(article => {
+    allArticles.forEach(article => {
         article.tags.forEach(tag => allTags.add(tag));
     });
     
@@ -175,9 +183,9 @@ function performSearch() {
     const query = searchInput.value.toLowerCase().trim();
     
     if (query === '' && activeFilters.size === 0) {
-        filteredArticles = [...articles];
+        filteredArticles = [...allArticles];
     } else {
-        filteredArticles = articles.filter(article => {
+        filteredArticles = allArticles.filter(article => {
             // Check tag filters
             if (activeFilters.size > 0) {
                 const hasTag = article.tags.some(tag => activeFilters.has(tag));
@@ -225,8 +233,39 @@ function clearFilters() {
     const tagElements = document.querySelectorAll('.tag-filter .tag');
     tagElements.forEach(tag => tag.classList.remove('active'));
     
-    filteredArticles = [...articles];
+    filteredArticles = [...allArticles];
     loadArticles();
+}
+
+// Inject reusable HTML fragments
+async function loadHtmlIncludes() {
+    const includeNodes = document.querySelectorAll('[data-include]');
+
+    await Promise.all(Array.from(includeNodes).map(async (node) => {
+        const includePath = node.getAttribute('data-include');
+        if (!includePath) return;
+
+        try {
+            const response = await fetch(includePath);
+            if (!response.ok) {
+                throw new Error(`Failed to load ${includePath}: ${response.status}`);
+            }
+            node.innerHTML = await response.text();
+        } catch (error) {
+            console.error(error);
+        }
+    }));
+}
+
+// Apply active class to nav link based on current page
+function setActiveNavLink() {
+    const page = document.body.getAttribute('data-page');
+    if (!page) return;
+
+    const activeLink = document.querySelector(`.nav-links a[data-page="${page}"]`);
+    if (activeLink) {
+        activeLink.classList.add('active');
+    }
 }
 
 // Format date

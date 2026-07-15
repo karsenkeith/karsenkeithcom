@@ -1,0 +1,119 @@
+@if (article(); as currentArticle) {
+  <article class="article-detail">
+    <div class="container">
+      <h2>{{ currentArticle.title }}</h2>
+      <p class="article-subtitle">{{ currentArticle.subtitle }}</p>
+      <div class="article-meta">
+        <span class="date">{{ formatDate(currentArticle.date) }}</span>
+        <div class="tags">
+          @for (tag of currentArticle.tags; track tag) {
+            <span class="tag">{{ tag }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="article-content">
+        <p>
+          The term "shepherd" is used throughout the Bible in both its noun and verb forms, and can refer to literal
+          shepherding of sheep or as a metaphor of God's unique relationship to His people. This second reference is
+          specifically what is in view of 1 Peter 5:1-4. Through a short survey of key verses spanning from Genesis all
+          the way to Revelation, we will see that Peter's exhortation to the elders of the early church is rooted
+          directly in the example of how God Himself shepherds his people.
+        </p>
+
+        <h3>God as Our Good Shepherd</h3>
+        <p>
+          To understand what it means for God to be our good shepherd, we turn to
+          <a href="https://read.csbible.com/?book=psalms&chapter=23&verse=1" target="_blank" rel="noopener noreferrer">
+            Psalm 23
+          </a>
+          and
+          <a href="https://read.csbible.com/?book=isaiah&chapter=40&verse=11" target="_blank" rel="noopener noreferrer">
+            Isaiah 40:11
+          </a>
+          . In Psalm 23, David tells us that God leads us in peace and righteousness,
+          protects us, and provides for us all for God's namesake. Similarly, Isaiah explains God's shepherding activity
+          as protection, gathering, carrying, and gently leading His flock. If these are the descriptions that God's
+          Word provides for how He shepherds His people, we can take these characteristics as the model for what a good
+          shepherd should be for God's people.
+        </p>
+
+        <h3>God Works Through Representatives</h3>
+        <p>
+          While there are examples of God directly shepherding His people in Scripture, more commonly, God works through
+          representatives to lead His people. It is explicitly stated in the Psalms that God "led [his] people like a
+          flock by the hand of Moses and Aaron." Moses also directly appeals to God to appoint a man over the
+          community "so that the LORD's community won't be like sheep without a shepherd."
+        </p>
+
+        <h3>The Failure of Israel's Shepherds</h3>
+        <p>
+          Even a cursory skim through the Old Testament makes it clear that sinful humanity could never perfectly
+          emulate the qualities of shepherding that God desires for His people. This is called out in
+          <a href="https://read.csbible.com/?book=ezekiel&chapter=34&verse=1" target="_blank" rel="noopener noreferrer">
+            Ezekiel 34
+          </a>
+          . The prophet is told to prophesy against the shepherds of Israel because they have greatly distorted God's
+          intended purposes. These false shepherds have been serving themselves instead of the flock and neglecting
+          their duties. Because of the failures of her leaders, Israel became prey for her enemies, ultimately leading
+          to the Babylonian exile.
+        </p>
+
+        <h3>Jesus: The Good Shepherd</h3>
+        <p>
+          The penultimate example of the good shepherd that God desires is shown through the incarnate Jesus Christ. In
+          that same chapter of Ezekiel where God calls out failed leaders, God also proclaims that He Himself will
+          shepherd His flock with justice. With this backdrop, Jesus enters the picture. Throughout His ministry He
+          exemplified all the qualities of the good shepherd by healing the sick, feeding thousands, and seeking the
+          lost.
+        </p>
+
+        <p>
+          Perhaps the most explicit treatment is in John, where Jesus directly states that He is the good shepherd who
+          lays down His life for the sheep, unlike hired hands who abandon the flock. If we want to understand the right
+          ways to shepherd God's people, there can be no better example than Jesus.
+        </p>
+
+        <h3>Jesus Raises Up Shepherds</h3>
+        <p>
+          Continuing the same model seen through Moses and Joshua in the Old Testament, Jesus established leaders to
+          help guide His people in the new covenant era. Jesus saw the crowds as sheep without a shepherd and then sent
+          out the disciples to go to the lost sheep of Israel, healing the sick and freely giving rather than serving
+          for gain.
+        </p>
+
+        <h3>Peter's Exhortation to Church Elders</h3>
+        <p>
+          It is in this context that we turn to 1 Peter 5:1-4. Peter roots the exhortation in the sufferings of Christ
+          and the coming glory of His kingdom. He compels proper motivations for leadership and warns against selfish
+          incentives, greed, and domineering authority. Finally, he calls elders to be examples to the flock.
+        </p>
+
+        <p>
+          This call is all-encompassing when we remember that Jesus, the Chief Shepherd, is our example and the
+          standard we should strive for in all shepherding ministry.
+        </p>
+
+        <h3>Conclusion</h3>
+        <p>
+          In summary, if we wish to truly shepherd God's flock as He intends, we must look to the examples God Himself
+          has provided, always striving to be more like Jesus. God is the only true Good Shepherd for His people, but
+          He desires to use us in His purposes; to that end, we must strive to be faithful servants and good shepherds
+          ourselves.
+        </p>
+      </div>
+
+      <div class="article-footer">
+        <a routerLink="/articles" class="btn btn-secondary">Back to Articles</a>
+      </div>
+    </div>
+  </article>
+} @else {
+  <section class="articles-section">
+    <div class="container">
+      <h2>Article not found</h2>
+      <p>The requested article could not be located.</p>
+      <a routerLink="/articles" class="btn btn-primary">Go to Articles</a>
+    </div>
+  </section>
+}

@@ -1,0 +1,77 @@
+<section class="articles-section">
+  <div class="container">
+    <h2>Academic Articles</h2>
+
+    <div class="search-filter-section">
+      <div class="search-box">
+        <label for="search-input" class="sr-only">Search articles</label>
+        <input
+          id="search-input"
+          type="text"
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
+          placeholder="Search articles by title, content, or tags..."
+        />
+      </div>
+
+      <button class="show-more-btn" type="button" (click)="toggleSearchFilter()">
+        @if (showMoreFilters()) {
+          Less Filters
+        } @else {
+          More Filters
+        }
+      </button>
+
+      <div class="search-filter-content" [class.open]="showMoreFilters()">
+        <div class="filter-section">
+          <h4>Filter by Tag:</h4>
+          <div class="tag-filter">
+            @for (tag of allTags(); track tag) {
+              <button class="tag" [class.active]="isTagActive(tag)" type="button" (click)="toggleTagFilter(tag)">
+                {{ tag }}
+              </button>
+            }
+          </div>
+          <button class="btn btn-secondary" type="button" (click)="clearFilters()">Clear Filters</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sort-section-outer">
+      <label for="sort-select">Sort by:</label>
+      <select
+        id="sort-select"
+        class="sort-select"
+        [value]="currentSortOrder()"
+        (change)="onSortSelectChange($event)"
+      >
+        <option value="date-desc">Date (Newest First)</option>
+        <option value="date-asc">Date (Oldest First)</option>
+        <option value="title-asc">Title (A-Z)</option>
+        <option value="title-desc">Title (Z-A)</option>
+      </select>
+    </div>
+
+    @if (sortedArticles().length > 0) {
+      <div class="articles-list">
+        @for (article of sortedArticles(); track article.id) {
+          <article class="article-item">
+            <h3><a [routerLink]="['/articles', article.slug]">{{ article.title }}</a></h3>
+            <div class="date">{{ formatDate(article.date) }}</div>
+            <div class="summary">{{ article.summary }}</div>
+            <div class="tags">
+              @for (tag of article.tags; track tag) {
+                <button class="tag" type="button" (click)="toggleTagFilter(tag)">{{ tag }}</button>
+              }
+            </div>
+            <a [routerLink]="['/articles', article.slug]" class="btn btn-primary">Read Full Article</a>
+          </article>
+        }
+      </div>
+    } @else {
+      <div class="no-results">
+        <p>No articles found matching your search criteria.</p>
+      </div>
+    }
+  </div>
+</section>

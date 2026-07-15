@@ -1,0 +1,43 @@
+<section class="hero">
+  <div class="container">
+    <h2>Welcome to My Academic Collection</h2>
+    <p>Exploring biblical topics through scholarly research and thoughtful analysis</p>
+    <a routerLink="/articles" class="btn btn-primary">Browse Articles</a>
+  </div>
+</section>
+
+<section class="featured">
+  <div class="container">
+    <h3>Featured Articles</h3>
+    <div class="article-grid">
+      @for (article of featuredArticles(); track article.id) {
+        <article class="article-card">
+          <h4>
+            <a [routerLink]="['/articles', article.slug]">{{ article.title }}</a>
+          </h4>
+          <div class="date">{{ formatDate(article.date) }}</div>
+          <div class="excerpt">{{ article.summary }}</div>
+          <div class="tags">
+            @for (tag of article.tags; track tag) {
+              <span class="tag">{{ tag }}</span>
+            }
+          </div>
+          <a [routerLink]="['/articles', article.slug]" class="btn btn-primary">Read More</a>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="topics">
+  <div class="container">
+    <h3>Popular Topics</h3>
+    <div class="tag-cloud">
+      @for (item of popularTags(); track item.tag) {
+        <button class="tag" type="button" (click)="navigateToTag(item.tag)">
+          {{ item.tag }} ({{ item.count }})
+        </button>
+      }
+    </div>
+  </div>
+</section>
